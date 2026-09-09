@@ -9,6 +9,26 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      messages: {
+        Row: {
+          id: number
+          name: string
+          email: string
+          subject: string
+          whatsapp: string | null
+          message: string
+          created_at: string
+        }
+        Insert: {
+          name: string
+          email: string
+          subject: string
+          whatsapp?: string | null
+          message: string
+        }
+        Update: Record<string, never>
+        Relationships: []
+      }
       page_views: {
         Row: {
           id: number

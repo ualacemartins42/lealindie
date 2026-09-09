@@ -1,5 +1,5 @@
 import { Eye } from 'lucide-react'
-import { GitHubIcon, InstagramIcon } from '@/components/ui/SocialIcons'
+import { GitHubIcon, InstagramIcon, WhatsAppIcon } from '@/components/ui/SocialIcons'
 import { NAV_LINKS, SITE, SOCIAL } from '@/lib/constants'
 import { useSiteMetrics } from '@/hooks/useSiteMetrics'
 
@@ -54,6 +54,15 @@ export function Footer() {
             className="rounded-full border border-slate-300/70 p-2 text-slate-500 transition hover:text-royal-800 dark:border-white/10 dark:hover:text-mist"
           >
             <InstagramIcon size={16} />
+          </a>
+          <a
+            href={SOCIAL.whatsapp}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="WhatsApp"
+            className="rounded-full border border-slate-300/70 p-2 text-slate-500 transition hover:text-royal-800 dark:border-white/10 dark:hover:text-mist"
+          >
+            <WhatsAppIcon size={16} />
           </a>
         </div>
       </div>

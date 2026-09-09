@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react'
-import { getVisitorHash } from '@/lib/visitor'
 import { submitContactMessage } from '@/services/supabase/contacts'
 
 interface ContactFormState {
@@ -42,32 +41,20 @@ export function useContactForm() {
     setFeedback(null)
 
     try {
-      const hash = await getVisitorHash()
-      const status = await submitContactMessage(
-        {
-          name: values.name.trim(),
-          email: values.email.trim(),
-          subject: values.subject.trim(),
-          whatsapp: values.whatsapp.trim(),
-          message: values.message.trim(),
-          honeypot: values.company,
-        },
-        hash,
-      )
+      const status = await submitContactMessage({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        subject: values.subject.trim(),
+        whatsapp: values.whatsapp.trim(),
+        message: values.message.trim(),
+        honeypot: values.company,
+      })
 
       if (status === 'ok') {
         setValues(initialState)
         setFeedback({
           type: 'success',
-          text: 'Recado enviado. Eu leio com calma e respondo.',
-        })
-        return
-      }
-
-      if (status === 'rate_limited') {
-        setFeedback({
-          type: 'error',
-          text: 'Aguarde alguns minutos antes de enviar outro recado.',
+          text: 'Recado enviado com sucesso!',
         })
         return
       }
@@ -75,14 +62,19 @@ export function useContactForm() {
       if (status === 'unconfigured') {
         setFeedback({
           type: 'error',
-          text: 'O envio ainda não está ligado. Tente de novo em instantes.',
+          text: 'O envio ainda não está ligado. Confira as variáveis do Supabase e recarregue a página.',
         })
         return
       }
 
       setFeedback({
         type: 'error',
-        text: 'Não foi possível enviar agora. Tente de novo em instantes.',
+        text: 'Não foi possível enviar o recado. Tente novamente em instantes.',
+      })
+    } catch {
+      setFeedback({
+        type: 'error',
+        text: 'Não foi possível enviar o recado. Tente novamente em instantes.',
       })
     } finally {
       setSubmitting(false)

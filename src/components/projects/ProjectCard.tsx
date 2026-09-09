@@ -1,4 +1,4 @@
-import { ExternalLink, Heart, Smartphone, Globe } from 'lucide-react'
+import { Download, ExternalLink, Heart, Smartphone, Globe } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { Project } from '@/types'
 import { cn } from '@/lib/cn'
@@ -50,12 +50,17 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           {project.url ? (
             <a
               href={project.url}
-              target="_blank"
-              rel="noreferrer noopener"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-royal-800 transition group-hover:gap-2 dark:text-mist"
+              {...(project.download
+                ? { download: project.download }
+                : { target: '_blank', rel: 'noreferrer noopener' })}
             >
-              Abrir
-              <ExternalLink size={14} />
+              {project.download ? 'Baixar' : 'Abrir'}
+              {project.download ? (
+                <Download size={14} />
+              ) : (
+                <ExternalLink size={14} />
+              )}
             </a>
           ) : (
             <span className="text-sm font-medium text-slate-500">

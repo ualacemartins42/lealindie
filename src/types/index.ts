@@ -11,6 +11,7 @@ export interface Project {
   slug: ProjectSlug
   name: string
   url?: string
+  download?: string
   kind: ProjectKind
   kindLabel: string
   description: string

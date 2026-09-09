@@ -44,6 +44,8 @@ export const PROJECTS: readonly Project[] = [
   {
     slug: 'fuelflow',
     name: 'FuelFlow',
+    url: '/downloads/FuelFlow.apk',
+    download: 'FuelFlow.apk',
     kind: 'android',
     kindLabel: 'Aplicativo mobile',
     description:

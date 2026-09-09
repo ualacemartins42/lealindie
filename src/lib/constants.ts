@@ -11,6 +11,7 @@ export const SITE = {
 export const SOCIAL = {
   github: import.meta.env.VITE_GITHUB_URL || 'https://github.com/ualacemartins42',
   instagram: 'https://www.instagram.com/ualace.leal/',
+  whatsapp: 'https://wa.me/5524992682305',
 } as const
 
 export const NAV_LINKS = [
