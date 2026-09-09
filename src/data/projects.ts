@@ -23,12 +23,12 @@ export const PROJECTS: readonly Project[] = [
   },
   {
     slug: 'sekai',
-    name: 'Sekai',
+    name: 'Sekai Nipponic',
     url: 'https://sekai-gilt.vercel.app',
     kind: 'web',
     kindLabel: 'Aplicação web',
     description:
-      'Uma aplicação web que explora um pequeno universo próprio, com fluxos simples e uma interface pensada para ser agradável de usar.',
+      'Vitrine digital do Evento Sekai Nipponic. Sistema com inscrições online, mesa do júri digital, apuração do concurso cosplay em tempo real entre diversos outros recursos.',
     accent: 'from-indigo-950 via-navy-800 to-slate-950',
   },
   {
