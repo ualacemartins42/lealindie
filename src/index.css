@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-midnight: #020617;
+  --color-navy-950: #030b1a;
+  --color-navy-900: #071326;
+  --color-navy-800: #0c1c36;
+  --color-ink: #0a1628;
+  --color-royal-800: #1e3a8a;
+  --color-royal-700: #1d4ed8;
+  --color-royal-600: #2563eb;
+  --color-mist: #93c5fd;
+  --color-cyan-soft: #67e8f9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[#e8eef6] text-slate-600 antialiased dark:bg-midnight dark:text-slate-300;
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-royal-700) 35%, transparent);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(30 58 138 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(30 58 138 / 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.dark .bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(147 197 253 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(147 197 253 / 0.035) 1px, transparent 1px);
+}
+
+.glass {
+  @apply border border-slate-300/50 bg-white/55 shadow-lg shadow-navy-950/5 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-black/30;
+}
