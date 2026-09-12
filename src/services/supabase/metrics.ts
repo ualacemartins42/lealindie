@@ -1,5 +1,6 @@
 import type { ProjectSlug, SiteMetrics } from '@/types'
 import { supabase } from '@/services/supabase/supabaseClient'
+import { fetchLikeCounts, readLocalLikedSlugs } from '@/services/supabase/likes'
 
 interface MetricsRpc {
   total_views: number
@@ -7,18 +8,6 @@ interface MetricsRpc {
   total_likes: number
   likes_by_project: Record<string, number>
   liked_slugs: string[]
-}
-
-const PROJECT_SLUGS = new Set<ProjectSlug>([
-  'tyairo',
-  'metrika8',
-  'sekai',
-  'eltroca',
-  'fuelflow',
-])
-
-function isProjectSlug(value: string): value is ProjectSlug {
-  return PROJECT_SLUGS.has(value as ProjectSlug)
 }
 
 function emptyMetrics(): SiteMetrics {
@@ -31,24 +20,8 @@ function emptyMetrics(): SiteMetrics {
   }
 }
 
-function parseMetrics(raw: unknown): SiteMetrics {
-  if (!raw || typeof raw !== 'object') return emptyMetrics()
-
-  const data = raw as Partial<MetricsRpc>
-  const likedSlugs = Array.isArray(data.liked_slugs)
-    ? data.liked_slugs.filter(isProjectSlug)
-    : []
-
-  return {
-    totalViews: Number(data.total_views ?? 0),
-    uniqueVisitors: Number(data.unique_visitors ?? 0),
-    totalLikes: Number(data.total_likes ?? 0),
-    likesByProject:
-      data.likes_by_project && typeof data.likes_by_project === 'object'
-        ? data.likes_by_project
-        : {},
-    likedSlugs,
-  }
+function sumCounts(counts: Record<string, number>): number {
+  return Object.values(counts).reduce((total, value) => total + value, 0)
 }
 
 export async function registerPageView(
@@ -73,16 +46,39 @@ export async function registerPageView(
 export async function fetchSiteMetrics(
   visitorHash: string,
 ): Promise<SiteMetrics> {
-  if (!supabase) return emptyMetrics()
+  if (!supabase) {
+    return {
+      ...emptyMetrics(),
+      likedSlugs: readLocalLikedSlugs(),
+    }
+  }
+
+  const likesByProject = await fetchLikeCounts()
+  const likedSlugs = readLocalLikedSlugs()
 
   const { data, error } = await supabase.rpc('get_site_metrics', {
     p_visitor_hash: visitorHash,
   })
 
-  if (error) {
-    console.error('get_site_metrics', error.message)
-    return emptyMetrics()
+  if (error || !data || typeof data !== 'object') {
+    return {
+      totalViews: 0,
+      uniqueVisitors: 0,
+      totalLikes: sumCounts(likesByProject),
+      likesByProject,
+      likedSlugs,
+    }
   }
 
-  return parseMetrics(data)
+  const rpc = data as Partial<MetricsRpc>
+
+  return {
+    totalViews: Number(rpc.total_views ?? 0),
+    uniqueVisitors: Number(rpc.unique_visitors ?? 0),
+    totalLikes: sumCounts(likesByProject),
+    likesByProject,
+    likedSlugs,
+  }
 }
+
+export type { ProjectSlug }

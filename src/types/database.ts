@@ -80,7 +80,15 @@ export interface Database {
         Relationships: []
       }
     }
-    Views: Record<string, never>
+    Views: {
+      project_like_counts: {
+        Row: {
+          project_slug: string | null
+          like_count: number | null
+        }
+        Relationships: []
+      }
+    }
     Functions: {
       register_page_view: {
         Args: { p_visitor_hash: string; p_path?: string }

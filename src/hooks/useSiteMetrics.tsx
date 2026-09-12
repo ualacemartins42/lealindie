@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
@@ -15,7 +16,7 @@ import {
 } from '@/lib/visitor'
 import { isSupabaseConfigured } from '@/services/supabase/supabaseClient'
 import { fetchSiteMetrics, registerPageView } from '@/services/supabase/metrics'
-import { toggleProjectLike } from '@/services/supabase/likes'
+import { readLocalLikedSlugs, toggleProjectLike } from '@/services/supabase/likes'
 
 interface MetricsContextValue {
   configured: boolean
@@ -38,9 +39,14 @@ const MetricsContext = createContext<MetricsContextValue | null>(null)
 
 export function MetricsProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(isSupabaseConfigured)
-  const [metrics, setMetrics] = useState<SiteMetrics>(emptyMetrics)
+  const [metrics, setMetrics] = useState<SiteMetrics>(() => ({
+    ...emptyMetrics,
+    likedSlugs: readLocalLikedSlugs(),
+  }))
   const [pendingLike, setPendingLike] = useState<ProjectSlug | null>(null)
   const [visitorHash, setVisitorHash] = useState<string | null>(null)
+  const pendingRef = useRef<ProjectSlug | null>(null)
+  const likesTouchedRef = useRef(false)
 
   useEffect(() => {
     let cancelled = false
@@ -62,7 +68,7 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
         }
 
         const next = await fetchSiteMetrics(hash)
-        if (!cancelled) setMetrics(next)
+        if (!cancelled && !likesTouchedRef.current) setMetrics(next)
       } catch (error) {
         console.error(error)
       } finally {
@@ -79,63 +85,79 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
 
   const toggleLike = useCallback(
     async (slug: ProjectSlug) => {
-      if (!visitorHash || pendingLike) return
-
-      const currentlyLiked = metrics.likedSlugs.includes(slug)
-      const currentCount = metrics.likesByProject[slug] ?? 0
-
+      if (pendingRef.current) return
+      pendingRef.current = slug
+      likesTouchedRef.current = true
       setPendingLike(slug)
-      setMetrics((current) => {
-        const likesByProject = { ...current.likesByProject }
-        likesByProject[slug] = Math.max(
-          0,
-          currentCount + (currentlyLiked ? -1 : 1),
-        )
 
-        return {
-          ...current,
-          totalLikes: Math.max(0, current.totalLikes + (currentlyLiked ? -1 : 1)),
-          likesByProject,
-          likedSlugs: currentlyLiked
-            ? current.likedSlugs.filter((item) => item !== slug)
-            : [...current.likedSlugs, slug],
-        }
-      })
+      try {
+        const hash = visitorHash ?? (await getVisitorHash())
+        if (!visitorHash) setVisitorHash(hash)
 
-      const result = await toggleProjectLike(slug, visitorHash)
+        const currentlyLiked = metrics.likedSlugs.includes(slug)
+        const currentCount = metrics.likesByProject[slug] ?? 0
 
-      if (!result) {
         setMetrics((current) => {
           const likesByProject = { ...current.likesByProject }
-          likesByProject[slug] = currentCount
+          likesByProject[slug] = Math.max(
+            0,
+            currentCount + (currentlyLiked ? -1 : 1),
+          )
+
           return {
             ...current,
-            totalLikes: Math.max(
-              0,
-              current.totalLikes + (currentlyLiked ? 1 : -1),
-            ),
+            totalLikes: Math.max(0, current.totalLikes + (currentlyLiked ? -1 : 1)),
             likesByProject,
             likedSlugs: currentlyLiked
-              ? [...current.likedSlugs, slug]
-              : current.likedSlugs.filter((item) => item !== slug),
+              ? current.likedSlugs.filter((item) => item !== slug)
+              : [...current.likedSlugs, slug],
           }
         })
-      } else {
-        setMetrics((current) => ({
-          ...current,
-          likesByProject: {
-            ...current.likesByProject,
-            [slug]: result.count,
-          },
-          likedSlugs: result.liked
-            ? Array.from(new Set([...current.likedSlugs, slug]))
-            : current.likedSlugs.filter((item) => item !== slug),
-        }))
-      }
 
-      setPendingLike(null)
+        const result = await toggleProjectLike(slug, hash, currentlyLiked)
+
+        if (!result) {
+          setMetrics((current) => {
+            const likesByProject = { ...current.likesByProject }
+            likesByProject[slug] = currentCount
+            return {
+              ...current,
+              totalLikes: Math.max(
+                0,
+                current.totalLikes + (currentlyLiked ? 1 : -1),
+              ),
+              likesByProject,
+              likedSlugs: currentlyLiked
+                ? [...current.likedSlugs, slug]
+                : current.likedSlugs.filter((item) => item !== slug),
+            }
+          })
+        } else {
+          setMetrics((current) => {
+            const likesByProject = {
+              ...current.likesByProject,
+              [slug]: result.count,
+            }
+
+            return {
+              ...current,
+              likesByProject,
+              totalLikes: Object.values(likesByProject).reduce(
+                (total, value) => total + value,
+                0,
+              ),
+              likedSlugs: result.liked
+                ? Array.from(new Set([...current.likedSlugs, slug]))
+                : current.likedSlugs.filter((item) => item !== slug),
+            }
+          })
+        }
+      } finally {
+        pendingRef.current = null
+        setPendingLike(null)
+      }
     },
-    [metrics.likedSlugs, metrics.likesByProject, pendingLike, visitorHash],
+    [metrics.likedSlugs, metrics.likesByProject, visitorHash],
   )
 
   const likedSlugs = useMemo(
