@@ -9,7 +9,7 @@ export function Projects() {
         <SectionHeading
           eyebrow="Vitrine"
           title="O que foi ganhando forma"
-          description="Cinco projetos pessoais. Abra os que tiverem um endereço, deixe um like se algo ressoar."
+          description="Seis projetos pessoais. Abra os que tiverem um endereço, deixe um like se algo ressoar."
         />
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

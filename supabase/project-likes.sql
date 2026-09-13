@@ -10,7 +10,7 @@ create table if not exists public.project_likes (
 
 alter table public.project_likes drop constraint if exists project_likes_slug_check;
 alter table public.project_likes add constraint project_likes_slug_check check (
-  project_slug in ('tyairo', 'metrika8', 'sekai', 'eltroca', 'fuelflow')
+  project_slug in ('tyairo', 'metrika8', 'sekai', 'eltroca', 'fuelflow', 'gestomagico')
 );
 
 alter table public.project_likes drop constraint if exists project_likes_visitor_hash_len;

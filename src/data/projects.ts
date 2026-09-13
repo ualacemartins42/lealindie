@@ -52,4 +52,14 @@ export const PROJECTS: readonly Project[] = [
       'App prático para controle de consumo e eficiência de combustível (km/L) via odômetro total ou trip parcial, com funcionamento 100% offline.',
     accent: 'from-slate-950 via-navy-800 to-blue-950',
   },
+  {
+    slug: 'gestomagico',
+    name: 'Gesto Mágico',
+    url: 'https://gesto-magico-desafio-aritmetico.vercel.app/',
+    kind: 'web',
+    kindLabel: 'Aplicação web',
+    description:
+      'Desafio Aritmético é um jogo arcade ágil onde você desenha números na tela para estourar balões, resolver contas rápidas e derrotar chefes.',
+    accent: 'from-indigo-950 via-violet-950 to-navy-800',
+  },
 ] as const

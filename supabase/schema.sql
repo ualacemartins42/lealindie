@@ -35,7 +35,7 @@ create table if not exists public.project_likes (
   visitor_hash text not null,
   created_at timestamptz not null default now(),
   constraint project_likes_slug_check check (
-    project_slug in ('tyairo', 'metrika8', 'sekai', 'eltroca', 'fuelflow')
+    project_slug in ('tyairo', 'metrika8', 'sekai', 'eltroca', 'fuelflow', 'gestomagico')
   ),
   constraint project_likes_visitor_hash_len check (
     char_length(visitor_hash) between 16 and 128
@@ -156,7 +156,7 @@ begin
     raise exception 'invalid visitor hash' using errcode = '22023';
   end if;
 
-  if p_project_slug not in ('tyairo', 'metrika8', 'sekai', 'eltroca', 'fuelflow') then
+  if p_project_slug not in ('tyairo', 'metrika8', 'sekai', 'eltroca', 'fuelflow', 'gestomagico') then
     raise exception 'invalid project slug' using errcode = '22023';
   end if;
 

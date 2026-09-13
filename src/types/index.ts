@@ -4,6 +4,7 @@ export type ProjectSlug =
   | 'sekai'
   | 'eltroca'
   | 'fuelflow'
+  | 'gestomagico'
 
 export type ProjectKind = 'web' | 'android'
 
