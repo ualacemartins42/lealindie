@@ -1,43 +1,27 @@
-# Impede a pausa automática do projeto Supabase no plano Free
-# (inatividade de 7 dias). Roda a cada 3 dias e também pode ser disparado
-# manualmente em Actions → Keep Supabase Alive → Run workflow.
-#
-# Secrets necessários no repositório (Settings → Secrets and variables → Actions):
-#   SUPABASE_URL       — xxxx.supabase.co (sem https://)
-#   SUPABASE_ANON_KEY  — chave anon/publishable
-
 name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: '0 12 */3 * *'
+    - cron: '0 0 */3 * *'
   workflow_dispatch:
 
-permissions: {}
-
 jobs:
-  ping:
-    name: Ping Supabase
+  ping-supabase:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - name: Query messages table
+      - name: Ping Supabase Database
         run: |
-          set -euo pipefail
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            "https://xoivfmuqlktqbgpjdkfh.supabase.co/rest/v1/messages?select=id&limit=1")
 
-          RESPONSE_FILE="$(mktemp)"
-          trap 'rm -f "$RESPONSE_FILE"' EXIT
+          echo "Status recebido: $HTTP_STATUS"
 
-          STATUS="$(curl -sS -o "$RESPONSE_FILE" -w "%{http_code}" \
-            --max-time 30 \
-            -X GET "https://${{ secrets.SUPABASE_URL }}/rest/v1/messages?select=id&limit=1" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}")"
-
-          echo "HTTP status: ${STATUS}"
-
-          if [ "$STATUS" != "200" ]; then
-            echo "::error::Falha ao pingar o Supabase (HTTP ${STATUS})."
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 206 ]; then
+            echo "Supabase acordado com sucesso!"
+            exit 0
+          else
+            echo "Erro ao aceder ao Supabase (HTTP $HTTP_STATUS)"
             exit 1
           fi
-
-          echo "Supabase está ativo."
