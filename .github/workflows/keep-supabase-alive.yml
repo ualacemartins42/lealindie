@@ -3,7 +3,7 @@
 # manualmente em Actions → Keep Supabase Alive → Run workflow.
 #
 # Secrets necessários no repositório (Settings → Secrets and variables → Actions):
-#   SUPABASE_URL       — https://xxxx.supabase.co
+#   SUPABASE_URL       — xxxx.supabase.co (sem https://)
 #   SUPABASE_ANON_KEY  — chave anon/publishable
 
 name: Keep Supabase Alive
@@ -21,33 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Query get_site_metrics
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - name: Query messages table
         run: |
           set -euo pipefail
 
-          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
-            echo "::error::Configure os secrets SUPABASE_URL e SUPABASE_ANON_KEY no repositório."
-            exit 1
-          fi
-
-          BASE_URL="${SUPABASE_URL%/}"
           RESPONSE_FILE="$(mktemp)"
           trap 'rm -f "$RESPONSE_FILE"' EXIT
 
-          # RPC pública e somente leitura — as tabelas não têm SELECT para anon.
           STATUS="$(curl -sS -o "$RESPONSE_FILE" -w "%{http_code}" \
             --max-time 30 \
-            --retry 3 \
-            --retry-delay 5 \
-            -X POST "${BASE_URL}/rest/v1/rpc/get_site_metrics" \
-            -H "apikey: ${SUPABASE_ANON_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-            -H "Content-Type: application/json" \
-            -H "Accept: application/json" \
-            -d '{}')"
+            -X GET "https://${{ secrets.SUPABASE_URL }}/rest/v1/messages?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}")"
 
           echo "HTTP status: ${STATUS}"
 
