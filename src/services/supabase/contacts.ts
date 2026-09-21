@@ -43,24 +43,32 @@ export async function submitContactMessage(
     return 'ok'
   }
 
-  const { error } = await supabase.from('messages').insert({
-    name: payload.name,
-    email: payload.email,
-    subject: payload.subject,
-    whatsapp: payload.whatsapp || null,
-    message: payload.message,
-  })
+  const saveToSupabase = async (): Promise<boolean> => {
+    const { error } = await supabase.from('messages').insert({
+      name: payload.name,
+      email: payload.email,
+      subject: payload.subject,
+      whatsapp: payload.whatsapp || null,
+      message: payload.message,
+    })
 
-  if (error) {
-    console.error('messages insert', error.message)
-    return 'error'
+    if (error) {
+      console.error('messages insert', error.message)
+      return false
+    }
+
+    return true
   }
 
   try {
-    const emailed = await sendContactEmail(payload)
-    if (!emailed) return 'error'
+    const [saved, emailed] = await Promise.all([
+      saveToSupabase(),
+      sendContactEmail(payload),
+    ])
+
+    if (!saved || !emailed) return 'error'
   } catch (err) {
-    console.error('web3forms submit', err)
+    console.error('contact submit', err)
     return 'error'
   }
 
