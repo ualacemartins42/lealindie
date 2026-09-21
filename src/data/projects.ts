@@ -62,4 +62,14 @@ export const PROJECTS: readonly Project[] = [
       'Desafio Aritmético é um jogo arcade ágil onde você desenha números na tela para estourar balões, resolver contas rápidas e derrotar chefes.',
     accent: 'from-indigo-950 via-violet-950 to-navy-800',
   },
+  {
+    slug: 'ovitrampas',
+    name: 'Ovitrampas',
+    url: 'https://ovitrampasbp.vercel.app/',
+    kind: 'web',
+    kindLabel: 'Aplicação web',
+    description:
+      'Ovitrampas BP é um Aplicativo PWA offline-first para agentes de combate às endemias de Barra do Piraí. Permite cadastrar armadilhas, gerir ciclos com GPS e sincronizar dados com o banco de dados.',
+    accent: 'from-teal-950 via-emerald-950 to-navy-800',
+  },
 ] as const

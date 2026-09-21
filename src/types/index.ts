@@ -5,6 +5,7 @@ export type ProjectSlug =
   | 'eltroca'
   | 'fuelflow'
   | 'gestomagico'
+  | 'ovitrampas'
 
 export type ProjectKind = 'web' | 'android'
 

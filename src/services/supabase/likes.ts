@@ -10,6 +10,7 @@ const PROJECT_SLUGS = new Set<ProjectSlug>([
   'eltroca',
   'fuelflow',
   'gestomagico',
+  'ovitrampas',
 ])
 
 function isProjectSlug(value: string): value is ProjectSlug {
