@@ -39,12 +39,14 @@ export async function submitContactMessage(
 ): Promise<ContactSubmitStatus> {
   if (!supabase) return 'unconfigured'
 
+  const client = supabase
+
   if (payload.honeypot.trim().length > 0) {
     return 'ok'
   }
 
   const saveToSupabase = async (): Promise<boolean> => {
-    const { error } = await supabase.from('messages').insert({
+    const { error } = await client.from('messages').insert({
       name: payload.name,
       email: payload.email,
       subject: payload.subject,
