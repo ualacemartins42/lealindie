@@ -24,8 +24,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       whileHover={{ y: -6 }}
       className="glass group flex h-full flex-col overflow-hidden rounded-3xl"
     >
-      <div className={cn('relative h-36 bg-gradient-to-br p-5', project.accent)}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgb(147_197_253_/_0.18),transparent_50%)]" />
+      <div className="relative h-36 p-5" style={{ background: project.cover }}>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
         <div className="relative flex items-start justify-between">
           <span className="rounded-full border border-white/10 bg-midnight/40 px-3 py-1 text-[11px] font-semibold tracking-wide text-mist/90 uppercase">
             {project.kindLabel}
@@ -36,7 +36,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             <Globe className="text-mist/70" size={18} />
           )}
         </div>
-        <p className="relative mt-8 font-display text-2xl font-semibold text-slate-50">
+        <p className="relative mt-8 font-display text-2xl font-semibold text-slate-50 drop-shadow-[0_2px_6px_rgb(0_0_0_/_0.45)]">
           {project.name}
         </p>
       </div>

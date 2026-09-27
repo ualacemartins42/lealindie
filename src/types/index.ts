@@ -6,6 +6,7 @@ export type ProjectSlug =
   | 'fuelflow'
   | 'gestomagico'
   | 'ovitrampas'
+  | 'tabuletras'
 
 export type ProjectKind = 'web' | 'android'
 
@@ -17,7 +18,7 @@ export interface Project {
   kind: ProjectKind
   kindLabel: string
   description: string
-  accent: string
+  cover: string
 }
 
 export interface SiteMetrics {
