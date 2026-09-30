@@ -90,4 +90,26 @@ export const PROJECTS: readonly Project[] = [
     cover:
       'radial-gradient(circle at 88% 12%, rgb(251 191 36 / 0.55), transparent 45%), radial-gradient(circle at 10% 115%, rgb(16 185 129 / 0.55), transparent 50%), linear-gradient(135deg, #8b5a2b 0%, #5c3a1e 50%, #2b1a0d 100%)',
   },
+  {
+    slug: 'semaforo',
+    name: 'Semáforo do Toque',
+    url: 'https://inovai.pirai.rj.gov.br/secmulher/',
+    kind: 'web',
+    kindLabel: 'Aplicação web',
+    description:
+      'Aplicação web educativa de autoproteção infantil da Prefeitura de Piraí - RJ. Ensina limites corporais de forma lúdica pelo Semáforo do Toque, com áudio narrado, reforço positivo e certificado.',
+    cover:
+      'radial-gradient(circle at 92% 18%, rgb(239 68 68 / 0.85), transparent 18%), radial-gradient(circle at 78% 45%, rgb(251 191 36 / 0.8), transparent 18%), radial-gradient(circle at 64% 72%, rgb(16 185 129 / 0.8), transparent 18%), linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #172554 100%)',
+  },
+  {
+    slug: 'colai',
+    name: 'Cola Aí',
+    url: 'https://colai-wine.vercel.app/',
+    kind: 'web',
+    kindLabel: 'Aplicação web',
+    description:
+      'É um Pastebin interno e ágil para equipes. Cole trechos de código ou logs com realce de sintaxe e compartilhe com os colegas de forma rápida e segura usando apenas um código de 6 caracteres.',
+    cover:
+      'radial-gradient(circle at 88% 12%, rgb(56 189 248 / 0.5), transparent 45%), radial-gradient(circle at 12% 115%, rgb(16 185 129 / 0.45), transparent 50%), linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #070d18 100%)',
+  },
 ] as const

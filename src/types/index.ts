@@ -7,6 +7,8 @@ export type ProjectSlug =
   | 'gestomagico'
   | 'ovitrampas'
   | 'tabuletras'
+  | 'semaforo'
+  | 'colai'
 
 export type ProjectKind = 'web' | 'android'
 
