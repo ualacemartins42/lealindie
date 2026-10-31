@@ -9,6 +9,7 @@ export type ProjectSlug =
   | 'tabuletras'
   | 'semaforo'
   | 'colai'
+  | 'tyairocron'
 
 export type ProjectKind = 'web' | 'android'
 

@@ -112,4 +112,15 @@ export const PROJECTS: readonly Project[] = [
     cover:
       'radial-gradient(circle at 88% 12%, rgb(56 189 248 / 0.5), transparent 45%), radial-gradient(circle at 12% 115%, rgb(16 185 129 / 0.45), transparent 50%), linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #070d18 100%)',
   },
+  {
+    slug: 'tyairocron',
+    name: 'Cronômetro Tyairô',
+    url: 'https://tyairo-cron.vercel.app',
+    kind: 'web',
+    kindLabel: 'Aplicação web',
+    description:
+      'Cronômetro de treinos e intervalos da Academia de Judô Tyairô. Configura tempos, rounds e sons de alerta, com comando de voz Hajime, contagem de preparação e instalação no celular para usar em tela cheia no tatame.',
+    cover:
+      'radial-gradient(circle at 88% 12%, rgb(212 155 106 / 0.55), transparent 45%), radial-gradient(circle at 10% 115%, rgb(52 211 153 / 0.4), transparent 45%), linear-gradient(135deg, #6f4e37 0%, #4a2c2a 50%, #251615 100%)',
+  },
 ] as const
