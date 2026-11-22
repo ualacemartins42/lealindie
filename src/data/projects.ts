@@ -126,7 +126,7 @@ export const PROJECTS: readonly Project[] = [
   {
     slug: 'legadoancestrais',
     name: 'O Legado dos Ancestrais',
-    url: 'https://drive.google.com/file/d/12iqH9KT4wxPSidZmyntHK_H16e-brJzH/view?usp=sharing',
+    url: 'https://drive.google.com/file/d/1RKjdl3HxDbvmCImLorVivGWYIDcQZkn4/view?usp=sharing',
     download: 'O-Legado-dos-Ancestrais',
     kind: 'game',
     kindLabel: 'Jogo para PC',
