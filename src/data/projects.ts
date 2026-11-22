@@ -123,4 +123,16 @@ export const PROJECTS: readonly Project[] = [
     cover:
       'radial-gradient(circle at 88% 12%, rgb(212 155 106 / 0.55), transparent 45%), radial-gradient(circle at 10% 115%, rgb(52 211 153 / 0.4), transparent 45%), linear-gradient(135deg, #6f4e37 0%, #4a2c2a 50%, #251615 100%)',
   },
+  {
+    slug: 'legadoancestrais',
+    name: 'O Legado dos Ancestrais',
+    url: 'https://drive.google.com/file/d/1FkJNujq4hUaMc65grmZrS93oZtwqzN9F/view?usp=drive_link',
+    download: 'O-Legado-dos-Ancestrais',
+    kind: 'game',
+    kindLabel: 'Jogo para PC',
+    description:
+      'Jogo de luta estilo King of Fighters. Sprites, cenários, golpes especiais e Desperation Moves criados por mim.',
+    cover:
+      'radial-gradient(circle at 88% 12%, rgb(250 204 21 / 0.55), transparent 40%), radial-gradient(circle at 12% 110%, rgb(239 68 68 / 0.55), transparent 50%), linear-gradient(135deg, #7f1d1d 0%, #450a0a 45%, #0a0a0a 100%)',
+  },
 ] as const

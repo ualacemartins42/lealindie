@@ -1,4 +1,4 @@
-import { Download, ExternalLink, Heart, Smartphone, Globe } from 'lucide-react'
+import { Download, ExternalLink, Heart, Smartphone, Globe, Gamepad2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { Project } from '@/types'
 import { cn } from '@/lib/cn'
@@ -32,6 +32,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </span>
           {project.kind === 'android' ? (
             <Smartphone className="text-mist/70" size={18} />
+          ) : project.kind === 'game' ? (
+            <Gamepad2 className="text-mist/70" size={18} />
           ) : (
             <Globe className="text-mist/70" size={18} />
           )}
@@ -51,7 +53,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             <a
               href={project.url}
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-royal-800 transition group-hover:gap-2 dark:text-mist"
-              {...(project.download
+              {...(project.download && project.url?.startsWith('/')
                 ? { download: project.download }
                 : { target: '_blank', rel: 'noreferrer noopener' })}
             >

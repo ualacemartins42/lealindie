@@ -10,8 +10,9 @@ export type ProjectSlug =
   | 'semaforo'
   | 'colai'
   | 'tyairocron'
+  | 'legadoancestrais'
 
-export type ProjectKind = 'web' | 'android'
+export type ProjectKind = 'web' | 'android' | 'game'
 
 export interface Project {
   slug: ProjectSlug
