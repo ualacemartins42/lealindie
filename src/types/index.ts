@@ -11,6 +11,7 @@ export type ProjectSlug =
   | 'colai'
   | 'tyairocron'
   | 'legadoancestrais'
+  | 'quarto404'
 
 export type ProjectKind = 'web' | 'android' | 'game'
 

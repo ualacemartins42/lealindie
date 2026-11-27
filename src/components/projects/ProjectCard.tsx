@@ -45,7 +45,21 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
       <div className="flex flex-1 flex-col p-5">
         <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-          {project.description}
+          {project.description.split(/(https?:\/\/[^\s]+)/g).map((part, index) =>
+            /^https?:\/\//.test(part) ? (
+              <a
+                key={`${project.slug}-link-${index}`}
+                href={part}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-medium text-royal-800 underline-offset-2 hover:underline dark:text-mist"
+              >
+                {part.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+              </a>
+            ) : (
+              <span key={`${project.slug}-text-${index}`}>{part}</span>
+            ),
+          )}
         </p>
 
         <div className="mt-auto flex items-center justify-between pt-6">

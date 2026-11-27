@@ -135,4 +135,15 @@ export const PROJECTS: readonly Project[] = [
     cover:
       'radial-gradient(circle at 88% 12%, rgb(250 204 21 / 0.55), transparent 40%), radial-gradient(circle at 12% 110%, rgb(239 68 68 / 0.55), transparent 50%), linear-gradient(135deg, #7f1d1d 0%, #450a0a 45%, #0a0a0a 100%)',
   },
+  {
+    slug: 'quarto404',
+    name: 'Quarto 404',
+    url: 'https://quarto404.vercel.app/',
+    kind: 'game',
+    kindLabel: 'Jogo web',
+    description:
+      'Jogo point and click no estilo escape room. Junte as pistas, desvende os enigmas e conquiste a liberdade. Jogue em https://quarto404.vercel.app/',
+    cover:
+      'radial-gradient(circle at 88% 12%, rgb(155 57 67 / 0.65), transparent 45%), radial-gradient(circle at 12% 110%, rgb(91 57 67 / 0.5), transparent 50%), linear-gradient(135deg, #5b3943 0%, #2a1a1f 50%, #141414 100%)',
+  },
 ] as const
